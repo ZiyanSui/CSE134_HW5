@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTTP with JavaScript</title>
+    <style>
+      * {
+        background-color: antiquewhite;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      form input,
+      button,
+      label {
+        margin: 0.3rem;
+        text-align: center;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        background-color: gray;
+        color: whitesmoke;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <label for="id">ID: </label>
+      <input type="number" id="id" name="id" />
+      <label for="article_name">Article Name: </label>
+      <input type="text" id="article_name" name="article_name" />
+      <label for="article_body">Article Body: </label>
+      <textarea
+        name="article_body"
+        id="article_body"
+        cols="30"
+        rows="10"
+      ></textarea>
+      <label for="date">Date: </label>
+      <input type="text" name="date" id="date" size="55" readonly />
+      <button type="button" id="postBtn">POST</button>
+      <button type="button" id="getBtn">GET</button>
+      <button type="button" id="putBtn">PUT</button>
+      <button type="button" id="deleteBtn">DELETE</button>
+    </form>
+    <output id="response"></output>
+    <script>
+      // Get current time
+      document.querySelector("#date").value = new Date();
+
+      // Post Button
+      const postBtn = document.querySelector("#postBtn");
+      postBtn.addEventListener("click", () => {
+        const form = document.querySelector("form");
+        const formData = new FormData(form);
+        fetch("https://httpbin.org/post", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const output = document.querySelector("#response");
+            output.innerHTML = `<p>Response: </p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          })
+          .catch((error) => console.error(error));
+        alert("POST button clicked!");
+      });
+
+      // Get Button
+      const getBtn = document.querySelector("#getBtn");
+      getBtn.addEventListener("click", () => {
+        fetch("https://httpbin.org/get", {
+          method: "GET",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const output = document.querySelector("#response");
+            output.innerHTML = `<p>Response: </p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          })
+          .catch((error) => console.error(error));
+        alert("GET button clicked!");
+      });
+
+      // Put Button
+      const putBtn = document.querySelector("#putBtn");
+      putBtn.addEventListener("click", () => {
+        const form = document.querySelector("form");
+        const formData = new FormData(form);
+        fetch("https://httpbin.org/put", {
+          method: "PUT",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const output = document.querySelector("#response");
+            output.innerHTML = `<p>Response: </p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          })
+          .catch((error) => console.error(error));
+        alert("PUT button clicked!");
+      });
+
+      // Delete Button
+      const deleteBtn = document.querySelector("#deleteBtn");
+      deleteBtn.addEventListener("click", () => {
+        const form = document.querySelector("form");
+        const formData = new FormData(form);
+        fetch("https://httpbin.org/delete", {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const output = document.querySelector("#response");
+            output.innerHTML = `<p>Response: </p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          })
+          .catch((error) => console.error(error));
+        alert("DELETE button clicked!");
+      });
+    </script>
+  </body>
+</html>
